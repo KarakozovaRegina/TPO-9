@@ -4,41 +4,55 @@ const sleep = (milliseconds) => {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 };
 
-// Создание и настройка драйвера перед запуском тестов
 const setupDriver = async () => {
   const driver = await new Builder().forBrowser("chrome").build();
   return driver;
 };
 
-// Основная функция для выполнения теста
 const executeTest = async (driver) => {
   try {
-    await driver.get("https://markformelle.by/");
+    await driver.get("https://randewoo.ru/");
     await sleep(3000);
 
-    // Нажать на ссылку "каталог"
-    const premiumShopLink = await driver.findElement(
+    // нажатие на ссылку Парфюмерия
+    const clickCatalog = await driver.findElement(
+      By.xpath("//a[@class='s-mainMenu__link']//span[text()='Парфюмерия']")
+    );
+    await clickCatalog.click();
+    await sleep(3000);
+
+    // нажатие на Женская
+    const clickWomen = await driver.findElement(
       By.xpath(
-        "//a[@class='collections-block round-block square-box' and @href='/catalog/collections/lnyanaya-kollektsiya/']"
+        "//a[@class='s-subnav__link s-subnav__listItemLink s-subnav__listItemLink--highlighted']//span[text()='Женская']"
       )
     );
-    await premiumShopLink.click();
+    await clickWomen.click();
     await sleep(3000);
 
-    // Нажать на ссылку "Премиум магазин"
-    const AcceptCookie = await driver.findElement(
+    // нажать на твор
+    const clickProduct = await driver.findElement(
+      By.xpath("//div[@class='b-catalogItem__brand'and text()='Kilian']")
+    );
+    await clickProduct.click();
+    await sleep(3000);
+
+    // нажатие на кнопку для сохранение в корзину
+    const clickButton = await driver.findElement(
       By.xpath(
-        "//div[@class='multisel filter-name_color_for_filter has-more-link']"
+        "//*[@id='app']/div[6]/div/main/article/div[3]/div/div[2]/div[2]/ul/li[1]/div[1]/div[4]"
       )
     );
-    await AcceptCookie.click();
+    await clickButton.click();
     await sleep(3000);
 
-    // Выбрать пункт "Золото"
-    const TankiLink = await driver.findElement(
-      By.xpath("//span[@class='filter-item-value' and text()='белый']")
+    // оформление заказа
+    const oformProduct = await driver.findElement(
+      By.xpath(
+        "//a[@class='s-button s-button--fluid s-button--modern c-productAddPopup__successBtn']"
+      )
     );
-    await TankiLink.click();
+    await oformProduct.click();
     await sleep(3000);
 
     console.log("Тест успешно выполнен!");
@@ -47,7 +61,6 @@ const executeTest = async (driver) => {
   }
 };
 
-// Выполнение теста
 (async () => {
   let driver = null;
   try {
@@ -59,3 +72,4 @@ const executeTest = async (driver) => {
     }
   }
 })();
+
